@@ -1,0 +1,10 @@
+-- Portfolio 2: Indexing & Query Optimization
+CREATE INDEX idx_partial_covering_debit_logs ON transaction_logs(account_id, amount) WHERE entry_type = 'DEBIT';
+CREATE INDEX idx_accounts_customer_id ON accounts(customer_id);
+CREATE INDEX idx_transfers_source_status ON transfers(source_account_id, status);
+
+EXPLAIN ANALYZE
+SELECT account_id, SUM(amount) AS total_debit_volume
+FROM transaction_logs
+WHERE entry_type = 'DEBIT'
+GROUP BY account_id;
